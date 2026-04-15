@@ -1,0 +1,219 @@
+Q1
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/etNum1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter First Number"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/etNum2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Second Number"
+        android:inputType="number"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check and Display"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numbers will appear here"
+        android:textSize="18sp"
+        android:layout_marginTop="30dp" />
+
+</LinearLayout>
+
+main.java
+
+package com.example.twonum;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EditText etNum1 = findViewById(R.id.etNum1);
+        EditText etNum2 = findViewById(R.id.etNum2);
+        Button btnSubmit = findViewById(R.id.btnSubmit);
+        TextView tvDisplay = findViewById(R.id.tvDisplay);
+
+        btnSubmit.setOnClickListener(v -> {
+            String s1 = etNum1.getText().toString();
+            String s2 = etNum2.getText().toString();
+
+            // 1. Check for empty inputs
+            if (s1.isEmpty() || s2.isEmpty()) {
+                Toast.makeText(this, "Please enter both numbers", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int num1 = Integer.parseInt(s1);
+            int num2 = Integer.parseInt(s2);
+
+            // 2. Logic: Reject if BOTH are greater than 10
+            if (num1 > 10 && num2 > 10) {
+                Toast.makeText(this, "Both numbers > 10! Enter new numbers.", Toast.LENGTH_LONG).show();
+
+                // Clear inputs for new numbers
+                etNum1.setText("");
+                etNum2.setText("");
+                tvDisplay.setText("");
+            } else {
+                // 3. Display the numbers if they pass validation
+                tvDisplay.setText("Number 1: " + num1 + "\nNumber 2: " + num2);
+            }
+        });
+    }
+}
+
+Q2
+
+
+main.xml
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/name"
+        android:hint="Company Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/address"
+        android:hint="Address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/phno"
+        android:hint="Phone Number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/insertBtn"
+        android:text="Insert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/viewBtn"
+        android:text="Show Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data will appear here"/>
+</LinearLayout>
+
+main.java
+
+
+package com.example.company;
+import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+public class MainActivity extends Activity {
+    EditText name, address, phno;
+    Button insertBtn, viewBtn;
+    TextView result;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        name = findViewById(R.id.name);
+        address = findViewById(R.id.address);
+        phno = findViewById(R.id.phno);
+        insertBtn = findViewById(R.id.insertBtn);
+        viewBtn = findViewById(R.id.viewBtn);
+        result = findViewById(R.id.result);
+        dbHelper = new DBHelper(this);
+        db = dbHelper.getWritableDatabase();
+        // Insert Data
+        insertBtn.setOnClickListener(v -> {
+            ContentValues cv = new ContentValues();
+            cv.put("name", name.getText().toString());
+            cv.put("address", address.getText().toString());
+            cv.put("phno", phno.getText().toString());
+            db.insert("Company", null, cv);
+            Toast.makeText(this, "Inserted", Toast.LENGTH_SHORT).show();
+        });
+        // Show Data
+        viewBtn.setOnClickListener(v -> {
+            Cursor cursor = db.rawQuery("SELECT * FROM Company", null);
+            StringBuilder data = new StringBuilder();
+            while (cursor.moveToNext()) {
+                data.append("ID: ").append(cursor.getInt(0)).append("\n");
+                data.append("Name: ").append(cursor.getString(1)).append("\n");
+                data.append("Address: ").append(cursor.getString(2)).append("\n");
+                data.append("Phone: ").append(cursor.getString(3)).append("\n\n");
+            }
+            result.setText(data.toString());
+            cursor.close();
+        });
+    }
+}
+
+
+DBHelper.java
+
+package com.example.company;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+public class DBHelper extends SQLiteOpenHelper {
+    public static final String DB_NAME = "CompanyDB";
+    public static final int DB_VERSION = 1;
+    public DBHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String query = "CREATE TABLE Company (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, phno TEXT)";
+        db.execSQL(query);
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS Company");
+        onCreate(db);
+    }
+}

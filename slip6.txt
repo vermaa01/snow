@@ -1,0 +1,170 @@
+Q1
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Hello Message" />
+
+</LinearLayout>
+
+mainactivity.java
+
+package com.example.hellomsgnextact;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+
+
+public class MainActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button btn = findViewById(R.id.btnSend);
+
+        btn.setOnClickListener(v -> {
+            // Create Intent to move from MainActivity to SecondActivity
+            Intent i = new Intent(MainActivity.this, SecondActivity.class);
+
+            // Attach the message with a "key"
+            i.putExtra("msg_key", "Hello! Welcome to the Second Activity.");
+
+            // Start the activity
+            startActivity(i);
+        });
+    }
+}
+
+
+second.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting..."
+        android:textSize="22sp" />
+
+</LinearLayout>
+
+
+second.java
+
+package com.example.hellomsgnextact;
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+
+public class SecondActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+
+        TextView tv = findViewById(R.id.tvDisplay);
+
+        // Retrieve the string using the key "msg_key"
+        String receivedMsg = getIntent().getStringExtra("msg_key");
+
+        if (receivedMsg != null) {
+            tv.setText(receivedMsg);
+        }
+    }
+}
+
+
+Q2
+
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Friend List"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@+id/myListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+
+
+main.java
+
+package com.example.listview;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+
+public class MainActivity extends Activity {
+
+    // 1. Data Source
+    String[] friends = {"Krushna", "Rahul", "Amit", "Sneha", "Pooja", "Sagar", "Anjali"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ListView listView = findViewById(R.id.myListView);
+
+        // 2. Adapter: Bridge between Data and View
+        // We use the built-in simple_list_item_1 layout provided by Android
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                friends
+        );
+
+        listView.setAdapter(adapter);
+
+        // 3. Click Listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the name of the friend at the clicked position
+                String selectedFriend = friends[position];
+
+                // Display the Toast
+                Toast.makeText(MainActivity.this, "Clicked: " + selectedFriend, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}

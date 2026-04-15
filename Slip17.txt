@@ -1,0 +1,204 @@
+Slip-17—
+Q1
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Phone Number"
+        android:inputType="phone"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnDial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Dialer" />
+
+</LinearLayout>
+
+
+main.java
+
+package com.example.callintent;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EditText etPhone = findViewById(R.id.etPhoneNumber);
+        Button btnDial = findViewById(R.id.btnDial);
+
+        btnDial.setOnClickListener(v -> {
+            String number = etPhone.getText().toString();
+
+            if (number.isEmpty()) {
+                Toast.makeText(this, "Please enter a number", Toast.LENGTH_SHORT).show();
+            } else {
+                // 1. Create the Implicit Intent with ACTION_DIAL
+                // ACTION_DIAL opens the dialer with the number pre-filled.
+                // It DOES NOT require special runtime permissions.
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+
+                // 2. Set the data using the "tel:" prefix
+                intent.setData(Uri.parse("tel:" + number));
+
+                // 3. Start the activity
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+
+Q2—
+Main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Number"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Long press here for options"
+        android:textSize="18sp"
+        android:paddingTop="20dp"/>
+
+</LinearLayout>
+
+
+
+Main.java—
+package com.example.project1;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+
+public class MainActivity extends Activity {
+
+    EditText etNumber;
+    TextView tvResult;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        etNumber = findViewById(R.id.etNumber);
+        tvResult = findViewById(R.id.tvResult);
+
+        // Register context menu on TextView
+        registerForContextMenu(tvResult);
+    }
+
+    // Create Context Menu (Right Click / Long Press)
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        menu.setHeaderTitle("Select Operation");
+        menu.add(0, 1, 0, "Factorial");
+        menu.add(0, 2, 1, "Sum of Digits");
+    }
+
+    // Handle Menu Item Click
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        String input = etNumber.getText().toString();
+
+        if (input.isEmpty()) {
+            tvResult.setText("Please enter a number");
+            return true;
+        }
+
+        int num = Integer.parseInt(input);
+
+        switch (item.getItemId()) {
+
+            case 1:
+                long fact = 1;
+                for (int i = 1; i <= num; i++) {
+                    fact *= i;
+                }
+                tvResult.setText("Factorial = " + fact);
+                return true;
+
+            case 2:
+                int sum = 0;
+                int temp = num;
+                while (temp > 0) {
+                    sum += temp % 10;
+                    temp /= 10;
+                }
+                tvResult.setText("Sum of Digits = " + sum);
+                return true;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+}
+
+
+manifest.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.project1">
+
+    <application
+        android:allowBackup="true"
+        android:label="Country List"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+
+

@@ -1,0 +1,303 @@
+Slip-13—
+Q1.(use pixal2 device)
+MainActivity.java—
+package com.example.project1;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+
+Activity_Main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 1"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 2"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 3"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 4"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 5"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 6"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 7"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 8"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 9"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 10"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 11"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 12"
+            android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/button13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 13"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 14"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 21"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 15"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 16"
+            android:backgroundTint="#FF9800"/>
+
+        <Button
+            android:id="@+id/button17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 17"
+            android:backgroundTint="#FF9800"/>
+
+        <Button
+            android:id="@+id/button18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 18"
+            android:backgroundTint="#FF9800"/>
+        <Button
+            android:id="@+id/button19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 19"
+            android:backgroundTint="#FF9800"/>
+
+        <Button
+            android:id="@+id/button20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 20"
+            android:backgroundTint="#FF9800"/>
+    </LinearLayout>
+</ScrollView>
+
+
+
+Q2.
+MainActivity.java—
+package com.example.project1;
+
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+
+import com.example.project1.DBHelper;
+
+
+public class MainActivity extends Activity {
+
+    EditText teacherName;
+    Button btnSearch;
+    TextView result;
+    DBHelper dbHelper;
+    SQLiteDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        teacherName = findViewById(R.id.teacherName);
+        btnSearch = findViewById(R.id.btnSearch);
+        result = findViewById(R.id.result);
+
+        dbHelper = new DBHelper(this);
+        db = dbHelper.getReadableDatabase();
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String tName = teacherName.getText().toString();
+
+                String query = "SELECT s.s_name, st.subject " +
+                        "FROM Student s " +
+                        "JOIN StudentTeacher st ON s.sno = st.sno " +
+                        "JOIN Teacher t ON t.tno = st.tno " +
+                        "WHERE t.t_name = ?";
+
+                Cursor cursor = db.rawQuery(query, new String[]{tName});
+
+                StringBuilder data = new StringBuilder();
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        data.append("Student: ")
+                                .append(cursor.getString(0))
+                                .append("\nSubject: ")
+                                .append(cursor.getString(1))
+                                .append("\n\n");
+                    } while (cursor.moveToNext());
+                } else {
+                    data.append("No data found");
+                }
+
+                result.setText(data.toString());
+                cursor.close();
+            }
+        });
+    }
+}
+
+
+Activity_main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/teacherName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Teacher Name"/>
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Result will appear here"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"/>
+
+</LinearLayout>
+
+
+DBHelper—
+package com.example.project1;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DBHelper extends SQLiteOpenHelper {
+
+    public DBHelper(Context context) {
+        super(context, "SchoolDB", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE Student(sno INTEGER PRIMARY KEY, s_name TEXT, s_class TEXT, s_addr TEXT)");
+        db.execSQL("CREATE TABLE Teacher(tno INTEGER PRIMARY KEY, t_name TEXT, qualification TEXT, experience INTEGER)");
+        db.execSQL("CREATE TABLE StudentTeacher(id INTEGER PRIMARY KEY AUTOINCREMENT, sno INTEGER, tno INTEGER, subject TEXT)");
+
+        // Sample Data
+        db.execSQL("INSERT INTO Student VALUES(1,'Ravi','10','Pune')");
+        db.execSQL("INSERT INTO Student VALUES(2,'Amit','9','Mumbai')");
+
+        db.execSQL("INSERT INTO Teacher VALUES(1,'Sharma','MSc',10)");
+        db.execSQL("INSERT INTO Teacher VALUES(2,'Patil','BEd',5)");
+
+        db.execSQL("INSERT INTO StudentTeacher(sno,tno,subject) VALUES(1,1,'Math')");
+        db.execSQL("INSERT INTO StudentTeacher(sno,tno,subject) VALUES(2,1,'Science')");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS Student");
+        db.execSQL("DROP TABLE IF EXISTS Teacher");
+        db.execSQL("DROP TABLE IF EXISTS StudentTeacher");
+        onCreate(db);
+    }
+}
+

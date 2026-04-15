@@ -1,0 +1,139 @@
+Slip-20
+
+Q1.(add two images in drawable folder)
+main.java--
+package com.example.project1;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
+public class MainActivity extends Activity implements
+        ViewSwitcher.ViewFactory {
+    ImageSwitcher imageSwitcher;
+    Button btnNext;
+    int[] images = {
+            R.drawable.bulb_on,
+            R.drawable.bulb_off,
+            R.drawable.image
+    };
+    int index = 0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        imageSwitcher = findViewById(R.id.imageSwitcher);
+        btnNext = findViewById(R.id.btnNext);
+        imageSwitcher.setFactory(this);
+        imageSwitcher.setImageResource(images[index]);
+        btnNext.setOnClickListener(new
+                                           View.OnClickListener() {
+                                               @Override
+                                               public void onClick(View v) {
+                                                   index++;
+                                                   if(index == images.length){
+                                                       index = 0;
+                                                   }
+                                                   imageSwitcher.setImageResource(images[index]);
+                                               }
+                                           });
+    }
+    @Override
+    public View makeView() {
+        ImageView imageView = new ImageView(this);
+
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setLayoutParams(
+                new ImageSwitcher.LayoutParams(
+
+                        ImageSwitcher.LayoutParams.MATCH_PARENT,
+
+                        ImageSwitcher.LayoutParams.MATCH_PARENT));
+        return imageView;
+    }
+}
+
+main.xml--
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Image"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>
+
+
+
+Q2.
+MainActivity.java—
+
+package com.example.project1;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+
+
+public class MainActivity extends Activity {
+
+    ListView listView;
+
+    String[] countries = {
+            "India",
+            "USA",
+            "Canada",
+            "Australia",
+            "Germany",
+            "France",
+            "Japan",
+            "China",
+            "Brazil",
+            "South Africa"
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        listView = findViewById(R.id.listView);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, countries);
+
+        listView.setAdapter(adapter);
+    }
+}
+
+
+activity_main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+
+

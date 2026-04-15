@@ -1,0 +1,260 @@
+Slip-19—
+Q1.(add two images in drawable folder)
+Activity_main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/bulbImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/image2" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Turn ON"
+        android:textOn="Turn OFF" />
+
+</LinearLayout>
+
+
+MainActivity.java—
+package com.example.project1;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.ToggleButton;
+
+
+public class MainActivity extends Activity {
+
+    private ImageView bulbImage;
+    private ToggleButton toggleButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize views
+        bulbImage = findViewById(R.id.bulbImage);
+        toggleButton = findViewById(R.id.toggleButton);
+
+        // Set listener for the toggle button
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Switch to ON state
+                    bulbImage.setImageResource(R.drawable.image2);
+                } else {
+                    // Switch to OFF state
+                    bulbImage.setImageResource(R.drawable.image1);
+                }
+            }
+        });
+    }
+}
+
+
+
+
+Q2.
+
+main.xml--
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:stretchColumns="0,1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Membership Form"
+            android:textSize="28sp"
+            android:textColor="#BC00E1"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp" />
+
+        <TableRow android:layout_marginBottom="20dp">
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full name"
+                android:layout_span="2" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="25dp">
+            <TextView android:text="Gender" android:textSize="16sp" android:textColor="#808080"/>
+            <RadioGroup android:id="@+id/rgGender" android:orientation="horizontal">
+                <RadioButton android:id="@+id/rbM" android:text="M" android:textSize="14sp" />
+                <RadioButton android:id="@+id/rbF" android:text="F" android:textSize="14sp" />
+                <RadioButton android:id="@+id/rbOther" android:text="Other" android:textSize="14sp" />
+            </RadioGroup>
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20dp">
+            <EditText android:id="@+id/etCurrentWeight" android:hint="Current Weight" android:inputType="number" android:layout_marginRight="10dp"/>
+            <EditText android:id="@+id/etHeight" android:hint="Height" android:inputType="number" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20dp">
+            <EditText android:id="@+id/etGoalWeight" android:hint="Gaol weight" android:inputType="number" android:layout_marginRight="10dp"/>
+            <EditText android:id="@+id/etAge" android:hint="Age" android:inputType="number" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20dp">
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:layout_span="2" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20dp">
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                android:layout_span="2" />
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="30dp">
+            <CheckBox
+                android:id="@+id/cbRules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I have read, understood and accepted membership rules"
+                android:textSize="12sp"
+                android:layout_span="2" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="SUBMIT"
+                android:background="#BC00E1"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center"
+                android:layout_span="2" />
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>
+
+
+
+
+main.java--
+
+package com.example.tableformlayout;
+
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        final EditText name = findViewById(R.id.etFullName);
+        final EditText cWeight = findViewById(R.id.etCurrentWeight);
+        final EditText height = findViewById(R.id.etHeight);
+        final EditText gWeight = findViewById(R.id.etGoalWeight);
+        final EditText age = findViewById(R.id.etAge);
+        final EditText phone = findViewById(R.id.etPhone);
+        final EditText addr = findViewById(R.id.etAddress);
+        final RadioGroup genderGroup = findViewById(R.id.rgGender);
+        final CheckBox cb = findViewById(R.id.cbRules);
+        Button submit = findViewById(R.id.btnSubmit);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!cb.isChecked()) {
+                    Toast.makeText(MainActivity.this, "Please accept rules", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent i = new Intent(MainActivity.this, SecondActivity.class);
+
+                int gid = genderGroup.getCheckedRadioButtonId();
+                RadioButton rb = findViewById(gid);
+                String gender = (rb != null) ? rb.getText().toString() : "";
+
+                i.putExtra("res", "Name: " + name.getText().toString() +
+                        "\nGender: " + gender +
+                        "\nWeight: " + cWeight.getText().toString() +
+                        "\nHeight: " + height.getText().toString() +
+                        "\nGoal Weight: " + gWeight.getText().toString() +
+                        "\nAge: " + age.getText().toString() +
+                        "\nPhone: " + phone.getText().toString() +
+                        "\nAddress: " + addr.getText().toString());
+
+                startActivity(i);
+            }
+        });
+    }
+}
+
+
+
+second.java
+
+package com.example.tableformlayout;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class SecondActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TextView tv = new TextView(this);
+        tv.setPadding(40, 40, 40, 40);
+        tv.setTextSize(18);
+        tv.setText(getIntent().getStringExtra("res"));
+        setContentView(tv);
+    }
+}
+
+
+add this line after activity in manifest.xml
+<activity android:name=".SecondActivity" />
+

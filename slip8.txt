@@ -1,0 +1,208 @@
+Q1
+
+main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <TableRow android:layout_marginBottom="10dp">
+        <TextView android:text="Username: " android:textSize="18sp" />
+        <EditText
+            android:id="@+id/etUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name" />
+    </TableRow>
+
+    <TableRow android:layout_marginBottom="20dp">
+        <TextView android:text="Password: " android:textSize="18sp" />
+        <EditText
+            android:id="@+id/etPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Pass"
+            android:inputType="textPassword" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_span="2"
+            android:text="Login" />
+    </TableRow>
+
+</TableLayout>
+
+main.java
+
+package com.example.nextact;
+
+
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EditText etUser = findViewById(R.id.etUser);
+        EditText etPass = findViewById(R.id.etPass);
+        Button btn = findViewById(R.id.btnLogin);
+
+        btn.setOnClickListener(v -> {
+            String user = etUser.getText().toString();
+            String pass = etPass.getText().toString();
+
+            // Hardcoded Check (No Database)
+            if (user.equals("admin") && pass.equals("123")) {
+                Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
+
+                // Navigate to Dashboard
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+
+
+
+second.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to the Dashboard!"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+
+second.java
+
+package com.example.nextact;
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MainActivity2 extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+    }
+}
+
+
+
+
+Q2
+
+main.xml
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/email"
+        android:hint="Recipient Email"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/subject"
+        android:hint="Subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/message"
+        android:hint="Message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/sendBtn"
+        android:text="Send Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+
+
+main.java
+
+package com.example.email;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+public class MainActivity extends Activity {
+    EditText email, subject, message;
+    Button sendBtn;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        email = findViewById(R.id.email);
+        subject = findViewById(R.id.subject);
+        message = findViewById(R.id.message);
+        sendBtn = findViewById(R.id.sendBtn);
+        sendBtn.setOnClickListener(v -> sendEmail());
+    }
+    private void sendEmail() {
+        String recipient = email.getText().toString();
+        String sub = subject.getText().toString();
+        String msg = message.getText().toString();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{recipient});
+        intent.putExtra(Intent.EXTRA_SUBJECT, sub);
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+        startActivity(Intent.createChooser(intent, "Choose Email Client"));
+    }
+}
+
+
+
+manifest.xml
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.sendemail">
+    <application
+        android:label="Email App"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        <activity android:name=".MainActivity"
+            android:exported="true"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
+

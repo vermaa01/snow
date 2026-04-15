@@ -1,0 +1,179 @@
+Slip14—
+Q1.
+
+Activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="Hello World!"
+ app:layout_constraintBottom_toBottomOf="parent"
+ app:layout_constraintEnd_toEndOf="parent"
+ app:layout_constraintStart_toStartOf="parent"
+ app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+
+
+MainActivity.java—
+package com.example.project1;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+public class MainActivity extends Activity {
+    String tag="Events";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Log.d(tag,"In onCreate() event");
+    }
+    protected void onStart()
+    {
+        super.onStart();
+        Log.d(tag,"In onStart() event");
+    }
+    public void onRestart()
+    {
+        super.onRestart();
+        Log.d(tag,"In onRestart() event");
+    }
+    public void onResume()
+    {
+        super.onResume();
+        Log.d(tag,"In onResume() event");
+    }
+    public void onPause()
+    {
+        super.onPause();
+        Log.d(tag,"In onPause() event");
+    }
+    public void onStop()
+    {
+        super.onStop();
+        Log.d(tag,"In onStop() event");
+    }
+    public void onDestroy()
+    {
+        super.onDestroy();
+        Log.d(tag,"In onDestroy() event");
+    }
+}
+
+
+
+Q2.
+MainActivity.java—
+package com.example.project1;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+public class MainActivity extends Activity {
+    private TextView textView;
+    private Spinner spinner;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // Find the TextView and Spinner by their IDs
+        textView = findViewById(R.id.textView);
+        spinner = findViewById(R.id.spinner);
+        // Define the spinner data (text style options)
+        String[] styles = {"Normal", "Bold", "Italic", "Bold Italic", "Increase Size", "Decrease Size"};
+                // Create an ArrayAdapter to display the styles in the Spinner
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, styles);
+        // Set the layout for the drop-down items
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        ;
+        // Set the adapter to the Spinner
+        spinner.setAdapter(adapter);
+        // Set an ItemSelectedListener to detect changes in selection
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
+                                       int position, long id) {
+                changeTextStyle(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No action needed
+            }
+        });
+ }
+        // Method to change the text style of the TextView based on the selected position
+        private void changeTextStyle(int position) {
+            switch (position) {
+                case 0: // Normal
+                    textView.setTypeface(null, android.graphics.Typeface.NORMAL);textView.setTextSize(20);
+                    break;
+                case 1: // Bold
+                    textView.setTypeface(null, android.graphics.Typeface.BOLD);
+                    textView.setTextSize(20);
+                    break;
+                case 2: // Italic
+                    textView.setTypeface(null, android.graphics.Typeface.ITALIC);
+                    textView.setTextSize(20);
+                    break;
+                case 3: // Bold Italic
+                    textView.setTypeface(null, android.graphics.Typeface.BOLD_ITALIC);
+                    textView.setTextSize(20);
+                    break;
+                case 4: // Increase Size
+                    float currentSize = textView.getTextSize() /
+                            getResources().getDisplayMetrics().density;
+                    textView.setTextSize(currentSize + 2);
+                    break;
+                case 5: // Decrease Size
+                    currentSize = textView.getTextSize() /
+                            getResources().getDisplayMetrics().density;
+                    textView.setTextSize(currentSize - 2);
+                    break;
+                default:
+                    textView.setTypeface(null, android.graphics.Typeface.NORMAL);
+                    textView.setTextSize(20);
+                    break;
+            }
+        }
+    }
+
+
+
+Activity_main.xml—
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- Spinner to select the style -->
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"/>
+    <!-- TextView that will change style based on spinner selection -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="coffee"
+        android:textSize="20sp"
+        android:layout_below="@id/spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"/>
+</RelativeLayout>
+
+

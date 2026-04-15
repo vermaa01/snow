@@ -1,0 +1,143 @@
+Q1
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:gravity="center">
+
+    <Switch
+        android:id="@+id/mySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch "
+        android:layout_marginBottom="20dp" />
+
+    <ToggleButton
+        android:id="@+id/myToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="ON"
+        android:textOff="OFF"
+        android:layout_marginBottom="30dp" />
+
+    <Button
+        android:id="@+id/btnStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check Status" />
+
+</LinearLayout>
+
+
+main.java
+
+package com.example.switchtoggle;
+import android.app.Activity; // Native Activity
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Switch; // Native Switch
+import android.widget.ToggleButton;
+import android.widget.Toast;
+
+public class MainActivity extends Activity { // Removed AppCompatActivity
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        final Switch sw = findViewById(R.id.mySwitch);
+        final ToggleButton tg = findViewById(R.id.myToggle);
+        Button btn = findViewById(R.id.btnStatus);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sStatus = sw.isChecked() ? "Switch ON" : "Switch OFF";
+                String tStatus = tg.isChecked() ? "Toggle ON" : "Toggle OFF";
+
+                Toast.makeText(MainActivity.this,
+                        sStatus + "\n" + tStatus, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+
+
+Q2
+
+main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fruit List"
+        android:textSize="24sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp" />
+
+    <ListView
+        android:id="@+id/fruitListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+
+main.java
+
+package com.example.arrayadapter;
+import android.app.Activity; // Native Activity
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+    // 1. Data Source
+    String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ListView listView = findViewById(R.id.fruitListView);
+
+        // 2. Create the ArrayAdapter
+        // We use android.R.layout.simple_list_item_1 (a built-in layout for a single text row)
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                fruits
+        );
+
+        // 3. Bind the adapter to the ListView
+        listView.setAdapter(adapter);
+
+        // 4. Handle Item Clicks
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedFruit = fruits[position];
+                Toast.makeText(MainActivity.this, "You selected: " + selectedFruit, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
